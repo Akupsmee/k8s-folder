@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: fleetman-webapp
+spec:
+  selector:
+    name: webapp
+  ports:
+    - name: http
+      port: 80
+      nodePort: 30080
+  type: NodePort
+
+
+# curl -X POST --data-urlencode "payload={\"channel\": \"#k8s-alerts\", \"username\": \"webhookbot\", \"text\": \"This is posted to #alerts and comes from a bot named webhookbot.\", \"icon_emoji\": \":ghost:\"}" https://hooks.slack.com/services/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

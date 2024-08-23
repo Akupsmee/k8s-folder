@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+ name: api-gateway
+spec:
+ replicas: 1
+ selector:
+  matchLabels:
+   name: api-gateway
+ template:
+  metadata:
+   labels:
+    name: api-gateway
+  spec:
+   containers:
+    - name: api-gateway
+      image: richardchesterwood/k8s-fleetman-api-gateway:performance
+      readinessProbe: 
+        httpGet:
+          path: /
+          port: 8080
+        initialDelaySeconds: 10
+        periodSeconds: 10
+      livenessProbe:
+        httpGet:
+          path: /
+          port: 8080
+        initialDelaySeconds: 10
+        periodSeconds: 10
+      resources:
+       requests:
+        memory: 299Mi # Mi equals 1024kiB, M equals 1000kb
+        cpu: 200m #equal to 0.2cpu, therefore wwe can just specify 0.2, if the actual cpu usage exceeds the cpu limit, it will be throttled and won't go over the set limit but container won't be killed
+       limits:
+        memory: 1000Mi # if the memory usage  exceeds the memory limit, container is killed and restarted (deployments)
+        cpu: 1 # if the actual cpu usage exceeds the cpu limit, it will be throttled and won't go over the set limit but container won't be killed
+      env:
+       - name: SPRING_PROFILES_ACTIVE
+         value: production-microservice

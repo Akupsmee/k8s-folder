@@ -1,0 +1,14 @@
+databaseChangeLog:
+ - changeSet:
+    id: 23.3.1
+    author: i.akupuome
+    changes:
+     - dropColumn:
+        tableName: tbl_inquirysearch
+        columnName: categories
+     - dropColumn:
+        tableName: tbl_inquirysearch
+        columnName: appointment
+     - dropColumn:
+        tableName: tbl_inquirysearch
+        columnName: appointment_wish

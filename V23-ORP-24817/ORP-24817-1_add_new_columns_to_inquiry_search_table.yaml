@@ -1,0 +1,17 @@
+databaseChangeLog:
+ - changeSet:
+    id: 23.1.1
+    author: i.akupuome
+    changes:
+     - addColumn:
+        tableName: tbl_inquirysearch
+        columns:
+         - column:
+            name: categories
+            type: varchar(65535)
+         - column:
+            name: appointment
+            type: varchar(65535)
+         - column:
+            name: appointment_wish
+            type: timestamptz

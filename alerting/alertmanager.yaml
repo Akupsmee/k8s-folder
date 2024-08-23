@@ -1,0 +1,42 @@
+global:
+  slack_api_url: 'https://hooks.slack.com/services/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'
+route:
+  group_by: ['alertname']
+  group_wait: 5s
+  group_interval: 1m
+  repeat_interval: 10m
+  receiver: 'slack'
+
+receivers:
+- name: 'slack'
+  slack_configs:
+  - channel: '#k8s-alerts'
+    icon_emoji: ':bell:'
+    send_resolved: true
+    text: "<!channel> \nsummary: {{ .CommonAnnotations.summary }}\ndescription: {{ .CommonAnnotations.description }}\nmessage: {{ .CommonAnnotations.message }}"
+
+
+
+  #   delete the secret initially configured and replaced it, following the steps below
+
+  #  1  k get secrets -n monitoring alertmanager-monitoring-kube-prometheus-alertmanager -o yaml
+  #  2  not necessary step --> take the data from the above decode it "echo <encoded string> | base64 --decode" just to see the content.
+  #  3  k delete secret -n monitoring alertmanager-monitoring-kube-prometheus-alertmanager 
+  #  4  k create secret generic --from-file='/Users/ikennaakupuome/Desktop/Tuts/k8s-microservice/alertmanager.yaml' -n monitoring alertmanager-monitoring-kube-prometheus-alertmanager
+
+  # k top pod
+  # k top node
+  # ─ k autoscale deploy api-gateway --cpu-percent 200  --min 1 --max 4.      --cpu-percent 200 is relative to the cpu request set on the container
+  
+# Scheduling procedures QoS==>
+# Guaranteed
+# 1. limit and request exist for memory and cpu on all conatiobers in the pod
+# 2. Container Limits must equal it's requests for all containers in the pod
+
+# Burstable
+# 1. Does not meet "Guaranteed" criteria
+# 2. Either limit or request is not set for memory and cpu but should be set for either of them
+# 3. limits do not equal requests
+
+# Best Effort
+# 1. Does not meet Burstable criteria
